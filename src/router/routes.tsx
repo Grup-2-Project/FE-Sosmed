@@ -1,10 +1,12 @@
-import Layout from '@/components/layout';
-import Index from '@/pages';
-import { createBrowserRouter } from 'react-router-dom';
+import Layout from "@/components/layout";
+import Index from "@/pages";
+import Login from "@/pages/auth/Login";
+import Register from "@/pages/auth/register";
+import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Layout />,
     children: [
       {
@@ -12,5 +14,13 @@ export const router = createBrowserRouter([
         element: <Index />,
       },
     ],
+  },
+  {
+    path: "/register",
+    element: <Register />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);
