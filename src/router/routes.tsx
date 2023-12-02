@@ -1,7 +1,7 @@
 import Layout from "@/components/layout";
 import Index from "@/pages";
 import Login from "@/pages/auth/Login";
-import Register from "@/pages/auth/register";
+import Register from "@/pages/auth/Register";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
