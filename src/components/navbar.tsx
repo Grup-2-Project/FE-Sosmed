@@ -21,8 +21,8 @@ import SearchBoxUser from "./search-box-user";
 const Navbar = () => {
   const { setTheme } = useTheme();
   return (
-    <div className="relative w-full bg-white/90 p-2 dark:bg-black/90">
-      <div className="container sticky top-0 flex w-full items-center justify-between">
+    <div className="sticky top-0 w-full bg-white/90 p-2 dark:bg-black/90">
+      <div className="container top-0 flex w-full items-center justify-between">
         <span>
           <p className="text-[35px] font-bold tracking-widest">
             <Link to="/">LOGO</Link>
