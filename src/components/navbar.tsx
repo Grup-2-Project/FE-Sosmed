@@ -46,10 +46,10 @@ const Navbar = () => {
               <DropdownMenuLabel>Hi, User</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="hover:cursor-pointer">
-                Profile
+                <Link to={"/user"}>Profile</Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="hover:cursor-pointer">
-                Settings
+                <Link to={"/user/settings"}>Settings</Link>
               </DropdownMenuItem>
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
