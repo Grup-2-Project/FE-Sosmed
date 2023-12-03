@@ -2,6 +2,8 @@ import Layout from "@/components/layout";
 import Index from "@/pages";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
+import Profile from "@/pages/user";
+import Settings from "@/pages/user/settings";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
@@ -12,6 +14,14 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Index />,
+      },
+      {
+        path: "/user",
+        element: <Profile />,
+      },
+      {
+        path: "user/settings",
+        element: <Settings />,
       },
     ],
   },
