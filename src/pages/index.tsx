@@ -1,5 +1,5 @@
 import PostFormPopup from "@/components/post-form-popup";
-import StoryCard from "@/components/story-card";
+import StoryContainer from "@/components/story-container";
 import { ImagePlusIcon } from "lucide-react";
 
 const Index = () => {
@@ -14,7 +14,7 @@ const Index = () => {
             </div>
           </div>
         </PostFormPopup>
-        <StoryCard />
+        <StoryContainer />
       </div>
     </div>
   );

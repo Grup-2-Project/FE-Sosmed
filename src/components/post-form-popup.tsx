@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 
 import {
   Dialog,
@@ -29,7 +29,7 @@ interface IProps {
 
 const PostFormPopup = (props: IProps) => {
   const { children } = props;
-
+  const [open, setOpen] = useState(false);
   const form = useForm<IStoryType>({
     resolver: zodResolver(storySchema),
     defaultValues: {
@@ -40,10 +40,14 @@ const PostFormPopup = (props: IProps) => {
 
   const submitStoryHandler = async (values: IStoryType) => {
     console.log(values);
+    form.reset();
+    setOpen(false);
   };
 
+  const fileRef = form.register("picture", { required: false });
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full">{children}</DialogTrigger>
       <DialogContent className="min-w-[700px]">
         <DialogHeader>
@@ -75,13 +79,14 @@ const PostFormPopup = (props: IProps) => {
             <FormField
               control={form.control}
               name="picture"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormControl>
                     <Input
                       id="picture"
                       type="file"
-                      {...field}
+                      accept="image/jpg, image/jpeg, image/png"
+                      {...fileRef}
                       className="mt-2"
                     />
                   </FormControl>
