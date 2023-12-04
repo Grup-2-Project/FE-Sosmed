@@ -2,7 +2,7 @@ import { Skeleton } from "./ui/skeleton";
 
 const StorySkeleton = () => {
   return (
-    <div className="w-[600px] rounded-xl border p-3">
+    <div className="w-[800px] rounded-xl border p-3">
       <div className="mb-2 flex w-full items-center gap-4">
         <div className="h-[30px] w-[30px] overflow-clip rounded-full">
           <Skeleton className="h-full w-full object-cover" />
