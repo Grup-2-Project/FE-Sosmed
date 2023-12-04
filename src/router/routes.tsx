@@ -3,7 +3,7 @@ import Index from "@/pages";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
 import Profile from "@/pages/user";
-import Settings from "@/pages/user/settings";
+import Settings from "@/pages/user/Settings";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([

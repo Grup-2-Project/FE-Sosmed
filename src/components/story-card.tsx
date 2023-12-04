@@ -10,7 +10,7 @@ const StoryCard = (props: IProps) => {
   const { story } = props;
 
   return (
-    <div className="w-[600px] rounded-xl border p-3">
+    <div className="w-[800px] rounded-xl border p-3">
       <div className="mb-2 flex w-full items-center gap-4">
         <div className="h-[30px] w-[30px] overflow-clip rounded-full">
           <img
@@ -19,7 +19,7 @@ const StoryCard = (props: IProps) => {
             className="h-full w-full object-cover"
           />
         </div>
-        <div className="leading-4">
+        <div className="leading-5">
           <p className="font-semibold">{story.user.username}</p>
           <p className="text-[12px] text-slate-400">2 hours ago</p>
         </div>
