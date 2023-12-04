@@ -5,7 +5,7 @@ export const loginSchema = z.object({
     .string()
     .min(1, { message: "Enter your email" })
     .email("Enter a valid email"),
-  passwrod: z
+  password: z
     .string()
     .min(7, { message: "Password minimal 7 character length" }),
 });
@@ -36,7 +36,10 @@ export const registerSchema = z.object({
       new RegExp(".*[`~<>?,./!@#$%^&*()\\-_+=\"'|{}\\[\\];:\\\\].*"),
       "One special character",
     ),
-  phone_number: z.string().regex(new RegExp("^[0-9]*$"), "Only numbers value"),
+  phone_number: z.string().regex(new RegExp("^[0-9]*$"), "Only numbers value").min(10, "Phone number must contain at least 10 characters"),
+}).refine(data => data.password === data.repassword, {
+  message: "Password don't match",
+  path: ["repassword"]
 });
 
 export type ILoginType = z.infer<typeof loginSchema>;

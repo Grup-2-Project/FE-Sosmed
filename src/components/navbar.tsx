@@ -45,19 +45,16 @@ const Navbar = () => {
             <DropdownMenuContent>
               <DropdownMenuLabel>Hi, User</DropdownMenuLabel>
               <DropdownMenuSeparator />
-
               <Link to={"/user"}>
                 <DropdownMenuItem className="hover:cursor-pointer">
                   Profile
                 </DropdownMenuItem>
               </Link>
-
               <Link to={"/user/settings"}>
                 <DropdownMenuItem className="hover:cursor-pointer">
                   Settings
                 </DropdownMenuItem>
               </Link>
-
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
                   <span>Theme</span>
@@ -80,9 +77,11 @@ const Navbar = () => {
                 </DropdownMenuPortal>
               </DropdownMenuSub>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="hover:cursor-pointer">
-                Logout
-              </DropdownMenuItem>
+              <Link to={"/login"}>
+                <DropdownMenuItem className="hover:cursor-pointer">
+                  Logout
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
