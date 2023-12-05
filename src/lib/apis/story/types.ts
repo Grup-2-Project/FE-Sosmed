@@ -18,7 +18,7 @@ export const storySchema = z.object({
 
 export interface IStory {
   id: number;
-  artike: string;
+  artikel: string;
   gambar: string;
   user: {
     user_id: number;

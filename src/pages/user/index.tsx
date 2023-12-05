@@ -32,8 +32,8 @@ const Profile = () => {
   return (
     <div className="container">
       <div className="flex flex-col items-center">
-        <div className="flex w-[800px] flex-col items-center rounded-xl border-b pb-4">
-          <section className="flex h-[400px] w-full items-end bg-[url('https://source.unsplash.com/800x300?mountain')] bg-[length:800px_320px] bg-top bg-no-repeat">
+        <div className="flex w-[700px] flex-col items-center rounded-xl border-b pb-4">
+          <section className="flex h-[400px] w-full items-end bg-[url('https://source.unsplash.com/700x300?mountain')] bg-[length:700px_320px] bg-top bg-no-repeat">
             <div className="flex w-full items-center justify-between px-3">
               <img
                 src="https://source.unsplash.com/150x150?women"
@@ -57,7 +57,7 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="mb-6 flex w-full justify-center mt-5">
+        <div className="mb-6 flex w-[700px] justify-center mt-5">
           {isLoading ? (
             <StorySkeleton />
           ) : (
