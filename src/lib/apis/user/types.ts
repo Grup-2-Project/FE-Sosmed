@@ -48,4 +48,4 @@ export const userUpdateSchema = z.object({
   path: ["repassword"]
 });
 
-export type IRegisterType = z.infer<typeof userUpdateSchema>;
+export type IUserUpdateType = z.infer<typeof userUpdateSchema>;

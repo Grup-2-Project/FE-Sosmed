@@ -8,8 +8,8 @@ interface IErrorMessage {
 const ErrorMessage = (props: IErrorMessage) => {
   const { className, error } = props;
   return (
-    <div className={clsx(className, " text-xs text-red-500")}>
-      <p className="whitespace-nowrap">{error && <p>{error.message}</p>}</p>
+    <div className={clsx(className, " whitespace-nowrap text-xs text-red-500")}>
+      {error && <p>{error.message}</p>}
     </div>
   );
 };

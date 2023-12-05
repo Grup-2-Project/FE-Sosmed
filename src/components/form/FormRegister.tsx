@@ -1,10 +1,17 @@
-import { registerSchema } from "@/lib/apis/auth/types";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IRegisterType, registerSchema } from "@/lib/apis/auth/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import ErrorMessage from "./ErrorMessage";
+import { Link, useNavigate } from "react-router-dom";
+import ErrorMessage from "./elements/ErrorMessage";
+import { userRegister } from "@/lib/apis/auth/api";
+import { useToast } from "../ui/use-toast";
 const FormRegister = () => {
+  const navigate = useNavigate();
+
+  const { toast } = useToast();
+
   const {
     register,
     handleSubmit,
@@ -12,18 +19,30 @@ const FormRegister = () => {
   } = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      first_name: "",
-      last_name: "",
+      username: "",
+      nama_depan: "",
+      nama_belakang: "",
       gender: "",
       email: "",
       password: "",
       repassword: "",
-      phone_number: "",
+      hp: "",
     },
   });
-  const handleRegister = () => {
-    alert("Register successfuly, please login");
-    window.location.href = "/login";
+  const handleRegister = async (body: IRegisterType) => {
+    try {
+      const result = await userRegister(body);
+      console.log(result.data);
+      toast({
+        description: "Registration successfully, please log in",
+      });
+      navigate("/login");
+    } catch (error: any) {
+      toast({
+        description: error,
+        variant: "destructive",
+      });
+    }
   };
   return (
     <form
@@ -49,13 +68,15 @@ const FormRegister = () => {
           </label>
           <input
             type="text"
-            className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none"
-            placeholder="first name"
+            className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none disabled:opacity-70"
+            placeholder="Monroe"
             id="first-name"
-            {...register("first_name")}
+            {...register("nama_depan")}
+            disabled={isSubmitting}
+            aria-disabled={isSubmitting}
           />
           <ErrorMessage
-            error={errors.first_name}
+            error={errors.nama_depan}
             className="absolute -bottom-6 left-1"
           />
         </div>
@@ -66,13 +87,15 @@ const FormRegister = () => {
           </label>
           <input
             type="text"
-            className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none"
-            placeholder="last name"
+            className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none disabled:opacity-70"
+            placeholder="Parker"
             id="last-name"
-            {...register("last_name")}
+            {...register("nama_belakang")}
+            disabled={isSubmitting}
+            aria-disabled={isSubmitting}
           />
           <ErrorMessage
-            error={errors.last_name}
+            error={errors.nama_belakang}
             className="absolute -bottom-6 left-1"
           />
         </div>
@@ -84,8 +107,10 @@ const FormRegister = () => {
         </label>
         <select
           id="gender"
-          className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none"
+          className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none disabled:opacity-70"
           {...register("gender")}
+          disabled={isSubmitting}
+          aria-disabled={isSubmitting}
         >
           <option value="" disabled selected hidden>
             Choose Gender
@@ -100,15 +125,36 @@ const FormRegister = () => {
       </div>
 
       <div className="relative flex w-full flex-col gap-y-2">
+        <label htmlFor="username" className="font-semibold">
+          Username
+        </label>
+        <input
+          type="text"
+          id="username"
+          className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none disabled:opacity-70"
+          placeholder="username"
+          {...register("username")}
+          disabled={isSubmitting}
+          aria-disabled={isSubmitting}
+        />
+        <ErrorMessage
+          error={errors.username}
+          className="absolute -bottom-6 left-1"
+        />
+      </div>
+
+      <div className="relative flex w-full flex-col gap-y-2">
         <label htmlFor="email" className="font-semibold">
           Email
         </label>
         <input
           type="email"
           id="email"
-          className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none"
+          className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none disabled:opacity-70"
           placeholder="test@mail.com"
           {...register("email")}
+          disabled={isSubmitting}
+          aria-disabled={isSubmitting}
         />
         <ErrorMessage
           error={errors.email}
@@ -123,8 +169,11 @@ const FormRegister = () => {
         <input
           type="password"
           id="password"
-          className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none"
+          className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none disabled:opacity-70"
           {...register("password")}
+          disabled={isSubmitting}
+          aria-disabled={isSubmitting}
+          placeholder="Password"
         />
         <ErrorMessage
           error={errors.password}
@@ -139,8 +188,11 @@ const FormRegister = () => {
         <input
           type="password"
           id="password"
-          className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none"
+          className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none disabled:opacity-70"
           {...register("repassword")}
+          disabled={isSubmitting}
+          aria-disabled={isSubmitting}
+          placeholder="Re-password"
         />
         <ErrorMessage
           error={errors.repassword}
@@ -155,17 +207,17 @@ const FormRegister = () => {
         <input
           type="text"
           id="phone-number"
-          className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none"
-          {...register("phone_number")}
+          className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none disabled:opacity-70"
+          {...register("hp")}
+          disabled={isSubmitting}
+          aria-disabled={isSubmitting}
+          placeholder="Phone Number"
         />
-        <ErrorMessage
-          error={errors.phone_number}
-          className="absolute -bottom-6 left-1"
-        />
+        <ErrorMessage error={errors.hp} className="absolute -bottom-6 left-1" />
       </div>
 
       <button
-        className="w-full rounded-lg bg-slate-800 px-5 py-3 font-medium text-white"
+        className="flex w-full justify-center rounded-lg bg-slate-800 px-5 py-3 font-medium text-white disabled:opacity-70"
         disabled={isSubmitting}
         aria-disabled={isSubmitting}
       >

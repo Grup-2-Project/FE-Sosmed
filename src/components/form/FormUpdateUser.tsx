@@ -1,10 +1,14 @@
-import { userUpdateSchema } from "@/lib/apis/user/types";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IUserUpdateType, userUpdateSchema } from "@/lib/apis/user/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Camera, Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
-import ErrorMessage from "./ErrorMessage";
+import ErrorMessage from "./elements/ErrorMessage";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { updateUser } from "@/lib/apis/user/api";
+import { toast } from "../ui/use-toast";
+import ModalDelete from "./elements/ModalDelete";
 const FormUpdateUser = () => {
   const {
     register,
@@ -23,9 +27,20 @@ const FormUpdateUser = () => {
       phone_number: "6282222222222",
     },
   });
-  const handleUpdateUser = () => {
-    alert("Changes saved successfully");
+  const handleUpdateUser = async (body: IUserUpdateType) => {
+    try {
+      const result = await updateUser(body);
+      toast({
+        description: result.message,
+      });
+    } catch (error: any) {
+      toast({
+        description: error,
+        variant: "destructive",
+      });
+    }
   };
+
   return (
     <form
       onSubmit={handleSubmit(handleUpdateUser)}
@@ -58,9 +73,14 @@ const FormUpdateUser = () => {
             <span className="text-sm text-sky-500 underline">@Monroe</span>
           </div>
         </div>
-        <button className=" rounded-full bg-rose-600 px-4 py-1 font-inter text-sm ">
-          delete account
-        </button>
+        <ModalDelete>
+          <button
+            className=" rounded-full bg-rose-600 px-4 py-1 font-inter text-sm "
+            type="button"
+          >
+            delete account
+          </button>
+        </ModalDelete>
       </div>
 
       <div className="p-10">
@@ -75,6 +95,7 @@ const FormUpdateUser = () => {
               type="text"
               className=" w-1/3"
               {...register("first_name")}
+              placeholder="Monroe"
             />
             <ErrorMessage error={errors.first_name} />
           </div>
@@ -89,6 +110,7 @@ const FormUpdateUser = () => {
               type="text"
               className=" w-1/3"
               {...register("last_name")}
+              placeholder="Parker"
             />
             <ErrorMessage error={errors.last_name} />
           </div>
@@ -105,6 +127,9 @@ const FormUpdateUser = () => {
               className="flex h-10 w-1/3 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               {...register("gender")}
             >
+              <option value="" selected hidden>
+                Choose Gender
+              </option>
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
@@ -116,7 +141,12 @@ const FormUpdateUser = () => {
             <Label htmlFor="email" className="min-w-[8rem] text-start">
               Email
             </Label>
-            <Input id="email" type="email" {...register("email")} />
+            <Input
+              id="email"
+              type="email"
+              {...register("email")}
+              placeholder="test@mail.com"
+            />
             <ErrorMessage error={errors.email} />
           </div>
 
@@ -125,7 +155,12 @@ const FormUpdateUser = () => {
             <Label htmlFor="password" className="min-w-[8rem] text-start">
               Password
             </Label>
-            <Input id="password" type="password" {...register("password")} />
+            <Input
+              id="password"
+              type="password"
+              {...register("password")}
+              placeholder="Password"
+            />
             <ErrorMessage error={errors.password} />
           </div>
 
@@ -138,31 +173,37 @@ const FormUpdateUser = () => {
               id="repassword"
               type="password"
               {...register("repassword")}
+              placeholder="Re-password"
             />
             <ErrorMessage error={errors.repassword} />
           </div>
 
-          {/* Number phone */}
+          {/* Phone Number */}
           <div className="flex items-center gap-x-10">
             <Label htmlFor="phone-number" className="min-w-[8rem] text-start">
-              Numbe phone
+              Phone Number
             </Label>
             <Input
               id="phone-number"
               type="text"
               {...register("phone_number")}
+              placeholder="Phone Number"
             />
             <ErrorMessage error={errors.phone_number} />
           </div>
 
           <div className="flex items-center justify-center  gap-x-3 pt-4">
-            <button className="rounded-lg border bg-white/20 px-10 py-2 text-sm font-semibold  shadow">
+            <button
+              className="rounded-lg border bg-white/20 px-10 py-2 text-sm font-semibold  shadow"
+              type="reset"
+            >
               Cancle
             </button>
             <button
               className="rounded-lg bg-sky-500 px-10 py-2 text-sm font-semibold"
               aria-disabled={isSubmitting}
               disabled={isSubmitting}
+              type="submit"
             >
               {isSubmitting ? (
                 <Loader className={"animate-spin text-2xl"} />
