@@ -1,11 +1,18 @@
-import { loginSchema } from "@/lib/apis/auth/types";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ILoginType, loginSchema } from "@/lib/apis/auth/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import ErrorMessage from "./ErrorMessage";
+import { Link, useNavigate } from "react-router-dom";
+import ErrorMessage from "./elements/ErrorMessage";
+import { userLogin } from "@/lib/apis/auth/api";
+import { useToast } from "../ui/use-toast";
 
 const FormLogin = () => {
+  const navigate = useNavigate();
+
+  const { toast } = useToast();
+
   const {
     register,
     handleSubmit,
@@ -17,9 +24,20 @@ const FormLogin = () => {
       password: "",
     },
   });
-  const handleLogin = () => {
-    alert("login successfuly");
-    window.location.href = "/";
+  const handleLogin = async (body: ILoginType) => {
+    try {
+      const result = await userLogin(body);
+      console.log(result.data);
+      toast({
+        description: result.message,
+      });
+      navigate("/");
+    } catch (error: any) {
+      toast({
+        description: error,
+        variant: "destructive",
+      });
+    }
   };
   return (
     <form
@@ -45,9 +63,11 @@ const FormLogin = () => {
         <input
           type="email"
           id="email"
-          className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none "
+          className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none disabled:opacity-70 "
           placeholder="test@mail.com"
           {...register("email")}
+          disabled={isSubmitting}
+          aria-disabled={isSubmitting}
         />
 
         <ErrorMessage
@@ -63,8 +83,11 @@ const FormLogin = () => {
         <input
           type="password"
           id="password"
-          className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none"
+          className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none disabled:opacity-70"
           {...register("password")}
+          disabled={isSubmitting}
+          aria-disabled={isSubmitting}
+          placeholder="Password"
         />
         <ErrorMessage
           error={errors.password}
@@ -73,12 +96,12 @@ const FormLogin = () => {
       </div>
 
       <button
-        className="w-full rounded-lg bg-slate-800 px-5 py-3 font-medium text-white"
+        className="flex w-full justify-center rounded-lg bg-slate-800 px-5 py-3 font-medium text-white disabled:opacity-70"
         disabled={isSubmitting}
         aria-disabled={isSubmitting}
       >
         {isSubmitting ? (
-          <Loader className={"animate-spin text-2xl"} />
+          <Loader className={"animate-spin text-2xl "} />
         ) : (
           "Login"
         )}
