@@ -20,22 +20,17 @@ export interface IStory {
   id: number;
   artikel: string;
   gambar: string;
-  user: {
-    user_id: number;
-    username: string;
-    foto_profil: string;
-  };
+  username: string;
+  foto_profil: string;
   comments: IComments[];
 }
 
 export interface IComments {
   comment_id: number;
   komentar: string;
-  commenter: {
-    user_id: number;
-    username: string;
-    foto_profile: string;
-  };
+  post_id: number
+  username: string
+  foto_profil: string
 }
 
 export type IStoryType = z.infer<typeof storySchema>;

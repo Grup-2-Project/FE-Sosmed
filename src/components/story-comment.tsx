@@ -17,7 +17,7 @@ const StoryComment = (props: IProps) => {
         />
       </div>
       <div>
-        <p className="text-[14px] font-medium">{comment.commenter.username}</p>
+        <p className="text-[14px] font-medium">{comment.username}</p>
         <p className="text-[12px]">{comment.komentar}</p>
       </div>
     </div>
