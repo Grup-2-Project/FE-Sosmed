@@ -16,6 +16,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Computer, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/context/theme-provider";
+import logo from "@/assets/img/logo2.jpg";
 import SearchBoxUser from "./search-box-user";
 
 const Navbar = () => {
@@ -24,9 +25,11 @@ const Navbar = () => {
     <div className="sticky top-0 w-full bg-white/90 p-2 dark:bg-black/90">
       <div className="container top-0 flex w-full items-center justify-between">
         <span>
-          <p className="text-[35px] font-bold tracking-widest">
-            <Link to="/">LOGO</Link>
-          </p>
+          <Link to="/">
+            <section className="h-[40px] bg-lime-500 rounded-full overflow-hidden">
+              <img src={logo} alt="async logo" className="h-full w-full" />
+            </section>
+          </Link>
         </span>
 
         <SearchBoxUser />
