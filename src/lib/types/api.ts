@@ -1,4 +1,4 @@
-export interface IResponse<T = any> {
-  message: "string";
+export type IResponse<T = any> = {
+  message: string;
   data: T;
-}
+};
