@@ -32,14 +32,13 @@ const FormRegister = () => {
   const handleRegister = async (body: IRegisterType) => {
     try {
       const result = await userRegister(body);
-      console.log(result.data);
       toast({
-        description: "Registration successfully, please log in",
+        description: result.message,
       });
       navigate("/login");
     } catch (error: any) {
       toast({
-        description: error,
+        description: error.toString(),
         variant: "destructive",
       });
     }
@@ -47,7 +46,7 @@ const FormRegister = () => {
   return (
     <form
       onSubmit={handleSubmit(handleRegister)}
-      className="w-full max-w-xl space-y-8 p-4"
+      className=" w-full max-w-md space-y-8 lg:max-w-lg "
     >
       <div className="flex flex-col gap-y-1 font-inter">
         <h1 className="text-2xl font-semibold uppercase text-slate-900">
@@ -187,7 +186,7 @@ const FormRegister = () => {
         </label>
         <input
           type="password"
-          id="password"
+          id="re-password"
           className="rounded-lg border border-slate-400 px-5 py-2 shadow outline-none disabled:opacity-70"
           {...register("repassword")}
           disabled={isSubmitting}

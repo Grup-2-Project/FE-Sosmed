@@ -7,10 +7,11 @@ import { Link, useNavigate } from "react-router-dom";
 import ErrorMessage from "./elements/ErrorMessage";
 import { userLogin } from "@/lib/apis/auth/api";
 import { useToast } from "../ui/use-toast";
+import { useToken } from "@/context/token-provider";
 
 const FormLogin = () => {
   const navigate = useNavigate();
-
+  const { changeToken } = useToken();
   const { toast } = useToast();
 
   const {
@@ -27,14 +28,16 @@ const FormLogin = () => {
   const handleLogin = async (body: ILoginType) => {
     try {
       const result = await userLogin(body);
-      console.log(result.data);
+      changeToken(result.data.token, result.data.username);
+      console.log(result);
       toast({
         description: result.message,
       });
       navigate("/");
     } catch (error: any) {
+      console.log(error);
       toast({
-        description: error,
+        description: error.toString(),
         variant: "destructive",
       });
     }
@@ -42,7 +45,7 @@ const FormLogin = () => {
   return (
     <form
       onSubmit={handleSubmit(handleLogin)}
-      className="w-full max-w-xl space-y-8 p-4"
+      className="w-full max-w-md space-y-8 lg:max-w-lg  "
     >
       <div className="flex flex-col gap-y-1 font-inter">
         <h2 className="text-2xl font-semibold uppercase text-slate-900">

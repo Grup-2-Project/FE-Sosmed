@@ -45,3 +45,13 @@ export const registerSchema = z.object({
 
 export type ILoginType = z.infer<typeof loginSchema>;
 export type IRegisterType = z.infer<typeof registerSchema>;
+
+
+export interface RegisterPayload {
+  nama_depan: string
+  username: string
+}
+export interface LoginPayload extends RegisterPayload {
+  token: string;
+
+}

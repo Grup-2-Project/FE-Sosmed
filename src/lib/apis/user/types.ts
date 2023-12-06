@@ -3,8 +3,9 @@ const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 
 export const userUpdateSchema = z.object({
-  first_name: z.string().min(1, { message: "Enter your first name " }),
-  last_name: z.string().min(1, { message: "Enter your last name" }),
+  nama_depan: z.string().min(1, { message: "Enter your first name " }),
+  nama_belakang: z.string().min(1, { message: "Enter your last name" }),
+  username: z.string().min(1, { message: "Enter your username" }),
   gender: z.string().min(1, { message: "Pick your gender" }),
   email: z
     .string()
@@ -29,8 +30,8 @@ export const userUpdateSchema = z.object({
       "One special character",
     )
     .min(6, { message: "Re-password must be at least 6 characters" }),
-  phone_number: z.string().regex(new RegExp("^[0-9]*$"), "Only numbers value").min(10, "Phone number must contain at least 10 characters"),
-  profile_picture: z
+  hp: z.string().regex(new RegExp("^[0-9]*$"), "Only numbers value").min(10, "Phone number must contain at least 10 characters"),
+  foto_profil: z
     .any()
     .refine((files) => !!files, {
       message: "Please upload a photo",
@@ -49,3 +50,15 @@ export const userUpdateSchema = z.object({
 });
 
 export type IUserUpdateType = z.infer<typeof userUpdateSchema>;
+
+export interface Profile {
+  ID: number;
+  FirstName: string;
+  LastName: string;
+  Gender: string;
+  Hp: string;
+  Email: string
+  Password: string;
+  Image?: string;
+  Username: string;
+}

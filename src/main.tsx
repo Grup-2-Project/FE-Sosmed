@@ -6,12 +6,15 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./router/routes.tsx";
 import { ThemeProvider } from "./context/theme-provider.tsx";
 import { Toaster } from "./components/ui/toaster.tsx";
+import { TokenProvider } from "./context/token-provider.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <RouterProvider router={router} />
-      <Toaster />
-    </ThemeProvider>
+    <TokenProvider>
+      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+        <RouterProvider router={router} />
+        <Toaster />
+      </ThemeProvider>
+    </TokenProvider>
   </React.StrictMode>,
 );

@@ -9,7 +9,10 @@ import { Label } from "../ui/label";
 import { updateUser } from "@/lib/apis/user/api";
 import { toast } from "../ui/use-toast";
 import ModalDelete from "./elements/ModalDelete";
+import { useToken } from "@/context/token-provider";
+
 const FormUpdateUser = () => {
+  const { user } = useToken();
   const {
     register,
     handleSubmit,
@@ -17,17 +20,20 @@ const FormUpdateUser = () => {
   } = useForm({
     resolver: zodResolver(userUpdateSchema),
     defaultValues: {
-      profile_picture: "",
-      first_name: "Monroe",
-      last_name: "Parker",
-      gender: "male",
-      email: "test@mail.com",
+      nama_depan: user.FirstName!,
+      nama_belakang: user.LastName!,
+      username: user.Username!,
+      email: user.Email!,
       password: "",
       repassword: "",
-      phone_number: "6282222222222",
+      gender: user.Gender!,
+      hp: user.Hp!,
+      foto_profil: "",
     },
   });
   const handleUpdateUser = async (body: IUserUpdateType) => {
+    body.foto_profil = body.foto_profil[0].name;
+
     try {
       const result = await updateUser(body);
       toast({
@@ -35,7 +41,7 @@ const FormUpdateUser = () => {
       });
     } catch (error: any) {
       toast({
-        description: error,
+        description: error.toString(),
         variant: "destructive",
       });
     }
@@ -61,11 +67,11 @@ const FormUpdateUser = () => {
               type="file"
               id="file-input"
               className="hidden"
-              {...register("profile_picture")}
+              {...register("foto_profil")}
             />
             <ErrorMessage
               className="absolute -bottom-6 left-0"
-              error={errors.profile_picture}
+              error={errors.foto_profil}
             />
           </div>
           <div className="flex flex-col ">
@@ -94,10 +100,10 @@ const FormUpdateUser = () => {
               id="firstname"
               type="text"
               className=" w-1/3"
-              {...register("first_name")}
+              {...register("nama_depan")}
               placeholder="Monroe"
             />
-            <ErrorMessage error={errors.first_name} />
+            <ErrorMessage error={errors.nama_depan} />
           </div>
 
           {/* Lastname */}
@@ -109,10 +115,24 @@ const FormUpdateUser = () => {
               id="lastname"
               type="text"
               className=" w-1/3"
-              {...register("last_name")}
+              {...register("nama_belakang")}
               placeholder="Parker"
             />
-            <ErrorMessage error={errors.last_name} />
+            <ErrorMessage error={errors.nama_belakang} />
+          </div>
+          {/* Lastname */}
+          <div className="relative flex items-center gap-x-10">
+            <Label htmlFor="username" className="w-32 text-start">
+              Username
+            </Label>
+            <Input
+              id="username"
+              type="text"
+              className=" w-1/3"
+              {...register("username")}
+              placeholder="username"
+            />
+            <ErrorMessage error={errors.username} />
           </div>
 
           {/* Gender */}
@@ -186,10 +206,10 @@ const FormUpdateUser = () => {
             <Input
               id="phone-number"
               type="text"
-              {...register("phone_number")}
+              {...register("hp")}
               placeholder="Phone Number"
             />
-            <ErrorMessage error={errors.phone_number} />
+            <ErrorMessage error={errors.hp} />
           </div>
 
           <div className="flex items-center justify-center  gap-x-3 pt-4">

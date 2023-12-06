@@ -1,15 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IResponse } from "@/lib/types/api"
-import { ILoginType, IRegisterType } from "../auth/types"
+import { ILoginType, IRegisterType, LoginPayload, RegisterPayload } from "../auth/types"
 import axiosWithConfig from "../axiosWithConfig"
-interface RegisterPayload {
-  nama_depan: string
-  username: string
-}
-interface LoginPayload extends RegisterPayload {
-  token: string;
 
-}
 export const userLogin = async (body: ILoginType) => {
   try {
     const response = await axiosWithConfig.post("/login", body)

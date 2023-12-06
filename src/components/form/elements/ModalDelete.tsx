@@ -25,14 +25,15 @@ const ModalDelete = ({ children }: ModalProps) => {
     try {
       setOpen(false);
       const result = await deleteUser();
-      console.log(result);
+      localStorage.removeItem("username");
+      localStorage.removeItem("token");
       toast({
-        description: result.status === 204 && "delete user successfully",
+        description: result.message,
       });
       navigate("/login");
     } catch (error: any) {
       toast({
-        description: error,
+        description: error.toString(),
         variant: "destructive",
       });
     }
