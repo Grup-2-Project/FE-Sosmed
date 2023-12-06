@@ -26,9 +26,8 @@ const DetailStory = () => {
 
     getData();
   }, [id]);
-
   return (
-    <div className="container mt-5 flex justify-center">
+    <div className="container mt-5 flex justify-center ">
       <div className="w-[700px]">
         {isLoading ? <StorySkeleton /> : <StoryCard story={data!} />}
       </div>
