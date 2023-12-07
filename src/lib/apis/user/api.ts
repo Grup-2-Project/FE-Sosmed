@@ -15,7 +15,23 @@ export const getUser = async (username: string) => {
 
 export const updateUser = async (body: IUserUpdateType) => {
   try {
-    const response = await axiosWithConfig.put("/users", body)
+
+    const formData = new FormData();
+
+    // Tambahkan properti non-file ke FormData
+    formData.append("nama_depan", body.nama_depan);
+    formData.append("nama_belakang", body.nama_belakang);
+    formData.append("username", body.username);
+    formData.append("email", body.email);
+    formData.append("gender", body.gender);
+    formData.append("hp", body.hp);
+
+    // Tambahkan file gambar ke FormData jika ada
+    if (body.foto_profil.length > 0) {
+      formData.append("foto_profil", body.foto_profil[0]);
+    }
+
+    const response = await axiosWithConfig.put("/users", formData)
     return response.data as IResponse
 
   } catch (error: any) {
