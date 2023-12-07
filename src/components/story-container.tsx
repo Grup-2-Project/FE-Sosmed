@@ -27,7 +27,7 @@ const StoryContainer = () => {
   }, []);
 
   return (
-    <div className="mb-6 flex w-full justify-center">
+    <div className="mb-6 flex w-full justify-center flex-col">
       {isLoading ? (
         <StorySkeleton />
       ) : (

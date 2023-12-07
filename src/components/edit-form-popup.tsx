@@ -20,29 +20,62 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IStoryType, storySchema } from "@/lib/apis/story/types";
 import { Dispatch, SetStateAction } from "react";
+import { editStoryById } from "@/lib/apis/story/api";
+import { useToast } from "./ui/use-toast";
+import { ToastAction } from "./ui/toast";
+import { Loader2 } from "lucide-react";
 
 interface IProps {
   open: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  id: number;
+  artikel: string;
+  gambar: string;
 }
 
 const EditFormPopup = (props: IProps) => {
-  const { open, setIsOpen } = props;
+  const { toast } = useToast();
+  const { open, setIsOpen, id, artikel, gambar } = props;
 
   const form = useForm<IStoryType>({
     resolver: zodResolver(storySchema),
     defaultValues: {
-      article: "",
-      picture: "",
+      artikel: artikel,
+      gambar: gambar,
+    },
+    values: {
+      artikel: artikel,
+      gambar: "",
     },
   });
 
   const submitStoryHandler = async (values: IStoryType) => {
-    console.log(values);
-    form.reset();
+    try {
+      const formData = new FormData();
+      formData.append("artikel", values.artikel as string);
+      formData.append("gambar", values.gambar[0]);
+
+      const res = await editStoryById(formData as any, id);
+
+      toast({
+        title: "Success",
+        description: res?.message,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: error.toString(),
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+      }
+    } finally {
+      form.reset();
+    }
   };
 
-  const fileRef = form.register("picture", { required: false });
+  const fileRef = form.register("gambar", { required: false });
 
   return (
     <Dialog open={open} onOpenChange={setIsOpen}>
@@ -57,7 +90,7 @@ const EditFormPopup = (props: IProps) => {
           >
             <FormField
               control={form.control}
-              name="article"
+              name="artikel"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -75,7 +108,7 @@ const EditFormPopup = (props: IProps) => {
 
             <FormField
               control={form.control}
-              name="picture"
+              name="gambar"
               render={() => (
                 <FormItem>
                   <FormControl>
@@ -92,8 +125,17 @@ const EditFormPopup = (props: IProps) => {
               )}
             />
 
-            <Button type="submit" className="mt-2">
-              Submit
+            <Button
+              type="submit"
+              className="mt-2"
+              disabled={form.formState.isSubmitting}
+              aria-disabled={form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                "Submit"
+              )}
             </Button>
           </form>
         </Form>

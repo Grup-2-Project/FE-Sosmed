@@ -43,8 +43,13 @@ export const userUpdateSchema = z.object({
     .refine(
       (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
       "Only .jpg, .jpeg, .png formats are supported"
+<<<<<<< HEAD
+    ),
+}).refine(data => data.password !== data.repassword, {
+=======
     ).optional().or(z.literal("")),
 }).refine(data => data.password === data.repassword, {
+>>>>>>> 9b34855de2f4ab048da704ab7f235ce638982808
   message: "Password don't match",
   path: ["repassword"]
 });

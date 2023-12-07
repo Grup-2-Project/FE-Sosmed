@@ -1,23 +1,45 @@
 import StoryCard from "@/components/story-card";
 import StorySkeleton from "@/components/story-skeleton";
 import { Button } from "@/components/ui/button";
-import { getStory } from "@/lib/apis/story/api";
+import { useToken } from "@/context/token-provider";
+
 import { IStory } from "@/lib/apis/story/types";
+import { getStoryByUsername, getUser } from "@/lib/apis/user/api";
+import { Profile } from "@/lib/apis/user/types";
 import { CalendarDays } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-const Profile = () => {
-  const [data, setData] = useState<IStory[]>();
+const ProfilePage = () => {
+  const [storyData, setStoryData] = useState<IStory[]>();
+  const [userData, setUserData] = useState<Profile>();
+
+  const { username } = useParams();
+  const { user } = useToken();
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getData = async () => {
       try {
         setIsLoading(true);
-        const res = await getStory();
+        const res = await getStoryByUsername(username);
+        const resUser = await getUser(username);
 
-        setData(res?.data);
+        const dataUser: Profile = {
+          ID: resUser.ID,
+          FirstName: resUser.FirstName,
+          LastName: resUser.LastName,
+          Gender: resUser.Gender,
+          Hp: resUser.Gender,
+          Email: resUser.Email,
+          Password: resUser.Password,
+          Image: resUser.Image,
+          Username: resUser.Username,
+        };
+
+        setStoryData(res?.data);
+        setUserData(dataUser);
         setIsLoading(false);
       } catch (error) {
         console.log(error);
@@ -27,7 +49,7 @@ const Profile = () => {
     };
 
     getData();
-  }, []);
+  }, [username]);
 
   return (
     <div className="container">
@@ -40,15 +62,17 @@ const Profile = () => {
                 alt="woman"
                 className="rounded-full"
               />
-              <Link to="/user/settings">
-                <Button className="rounded-3xl">Edit profile</Button>
-              </Link>
+              {user.Username === username && (
+                <Link to="/user/settings">
+                  <Button className="rounded-3xl">Edit profile</Button>
+                </Link>
+              )}
             </div>
           </section>
 
           <div className="mt-4 w-full px-3 leading-6">
-            <p className="text-[20px] font-bold">John Doe</p>
-            <p className="text-[14px] text-slate-400">@john_doe</p>
+            <p className="text-[20px] font-bold">{userData?.Username}</p>
+            <p className="text-[14px] text-slate-400">@{userData?.Username}</p>
 
             <div className="mt-2 flex items-center gap-1">
               <CalendarDays className="h-[16px] w-[16px]" />
@@ -57,12 +81,14 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="mb-6 flex w-[700px] justify-center mt-5">
+        <div className="my-3 mb-6 mt-5 flex w-[700px] flex-col justify-center">
           {isLoading ? (
             <StorySkeleton />
           ) : (
             <>
-              {data?.map((story) => <StoryCard story={story} key={story.id} />)}
+              {storyData?.map((story) => (
+                <StoryCard story={story} key={story.id} />
+              ))}
             </>
           )}
         </div>
@@ -71,4 +97,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ProfilePage;
