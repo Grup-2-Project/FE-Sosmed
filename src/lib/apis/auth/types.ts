@@ -7,7 +7,7 @@ export const loginSchema = z.object({
     .email("Enter a valid email"),
   password: z
     .string()
-    .min(7, { message: "Password minimal 7 character length" }),
+    .min(1, { message: "Enter your password" }),
 });
 
 export const registerSchema = z.object({

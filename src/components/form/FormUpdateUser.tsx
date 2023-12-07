@@ -10,35 +10,54 @@ import { updateUser } from "@/lib/apis/user/api";
 import { toast } from "../ui/use-toast";
 import ModalDelete from "./elements/ModalDelete";
 import { useToken } from "@/context/token-provider";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import ProfileSkeleton from "./elements/ProfileSkeleton";
 
 const FormUpdateUser = () => {
   const { user } = useToken();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    setValue,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(userUpdateSchema),
     defaultValues: {
-      nama_depan: user.FirstName!,
-      nama_belakang: user.LastName!,
-      username: user.Username!,
-      email: user.Email!,
+      nama_depan: "",
+      nama_belakang: "",
+      username: "",
+      email: "",
       password: "",
       repassword: "",
-      gender: user.Gender!,
-      hp: user.Hp!,
+      gender: "",
+      hp: "",
       foto_profil: "",
     },
   });
-  const handleUpdateUser = async (body: IUserUpdateType) => {
-    body.foto_profil = body.foto_profil[0].name;
 
+  useEffect(() => {
+    setValue("nama_depan", user.FirstName!);
+    setValue("nama_belakang", user.LastName!);
+    setValue("username", user.Username!);
+    setValue("email", user.Email!);
+    setValue("gender", user.Gender!);
+    setValue("hp", user.Hp!);
+  }, [user]);
+
+  const handleUpdateUser = async (body: IUserUpdateType) => {
     try {
       const result = await updateUser(body);
+      if (user.Username !== body.username) {
+        localStorage.setItem("username", body.username);
+      }
+
       toast({
         description: result.message,
       });
+      navigate("/");
     } catch (error: any) {
       toast({
         description: error.toString(),
@@ -52,42 +71,55 @@ const FormUpdateUser = () => {
       onSubmit={handleSubmit(handleUpdateUser)}
       className=" border-900 mx-auto flex max-w-4xl flex-col rounded-md border border-white/10 bg-black shadow-lg"
     >
-      <div className=" flex items-center justify-around py-8">
-        <div className="flex items-center gap-x-8">
-          <div className="relative ">
-            <label htmlFor="file-input" className="cursor-pointer">
-              <img
-                src="https://source.unsplash.com/80x80?person"
-                className="h-24 w-24 rounded-full"
-                alt="person"
+      {user.Image ? (
+        <div className=" flex items-center justify-around py-8">
+          <div className="flex items-center gap-x-8">
+            <div className="relative ">
+              <label htmlFor="file-input" className="cursor-pointer">
+                <img
+                  src={
+                    user.Image === "default"
+                      ? "https://source.unsplash.com/200x200?person"
+                      : user.Image
+                  }
+                  className="h-24 w-24 rounded-full object-cover "
+                  alt="profile"
+                />
+                <Camera className="absolute bottom-0 right-0  rounded-full bg-slate-700 " />
+              </label>
+
+              <Input
+                type="file"
+                id="file-input"
+                className="hidden"
+                {...register("foto_profil")}
               />
-              <Camera className="absolute bottom-0 right-0  rounded-full bg-slate-700 " />
-            </label>
-            <Input
-              type="file"
-              id="file-input"
-              className="hidden"
-              {...register("foto_profil")}
-            />
-            <ErrorMessage
-              className="absolute -bottom-6 left-0"
-              error={errors.foto_profil}
-            />
+              <ErrorMessage
+                className="absolute -bottom-6 left-0"
+                error={errors.foto_profil}
+              />
+            </div>
+            <div className="flex flex-col ">
+              <h3 className="text-2xl font-semibold">
+                {user.FirstName} {user.LastName}
+              </h3>
+              <span className="text-sm text-sky-500 underline">
+                @{user.Username}
+              </span>
+            </div>
           </div>
-          <div className="flex flex-col ">
-            <h3 className="text-2xl font-semibold">Monroe Parker</h3>
-            <span className="text-sm text-sky-500 underline">@Monroe</span>
-          </div>
+          <ModalDelete>
+            <button
+              className=" rounded-full bg-rose-600 px-4 py-1 font-inter text-sm "
+              type="button"
+            >
+              delete account
+            </button>
+          </ModalDelete>
         </div>
-        <ModalDelete>
-          <button
-            className=" rounded-full bg-rose-600 px-4 py-1 font-inter text-sm "
-            type="button"
-          >
-            delete account
-          </button>
-        </ModalDelete>
-      </div>
+      ) : (
+        <ProfileSkeleton />
+      )}
 
       <div className="p-10">
         <div className="mx-auto max-w-2xl space-y-8 ">
@@ -120,7 +152,8 @@ const FormUpdateUser = () => {
             />
             <ErrorMessage error={errors.nama_belakang} />
           </div>
-          {/* Lastname */}
+
+          {/* username */}
           <div className="relative flex items-center gap-x-10">
             <Label htmlFor="username" className="w-32 text-start">
               Username
@@ -215,7 +248,7 @@ const FormUpdateUser = () => {
           <div className="flex items-center justify-center  gap-x-3 pt-4">
             <button
               className="rounded-lg border bg-white/20 px-10 py-2 text-sm font-semibold  shadow"
-              type="reset"
+              onClick={() => reset()}
             >
               Cancle
             </button>
