@@ -3,8 +3,8 @@ import * as z from "zod";
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 
 export const storySchema = z.object({
-  article: z.string().optional().or(z.literal("")),
-  picture: z
+  artikel: z.string().optional().or(z.literal("")),
+  gambar: z
     .any()
     .refine((file) => file?.length == 1, "File is required.")
     .refine(
@@ -21,6 +21,7 @@ export interface IStory {
   artikel: string;
   gambar: string;
   username: string;
+  likes: number;
   foto_profil: string;
   comments: IComments[];
 }
@@ -28,9 +29,9 @@ export interface IStory {
 export interface IComments {
   comment_id: number;
   komentar: string;
-  post_id: number
-  username: string
-  foto_profil: string
+  post_id: number;
+  username: string;
+  foto_profil: string;
 }
 
 export type IStoryType = z.infer<typeof storySchema>;

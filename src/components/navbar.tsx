@@ -17,30 +17,30 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Computer, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/context/theme-provider";
 import logo from "@/assets/img/logo2.jpg";
-import SearchBoxUser from "./search-box-user";
+
 import { useToken } from "@/context/token-provider";
 
 const Navbar = () => {
-  const { user, token } = useToken();
+  const { user, token, changeToken } = useToken();
   const { setTheme } = useTheme();
   const navigate = useNavigate();
+
   const handlelogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
+    changeToken("");
+
     navigate("/login");
   };
+
   return (
     <div className="sticky top-0 w-full bg-white/90 p-2 dark:bg-black/90">
       <div className="container top-0 flex w-full items-center justify-between">
         <span>
           <Link to="/">
-            <section className="h-[40px] bg-lime-500 rounded-full overflow-hidden">
+            <section className="h-[40px] overflow-hidden rounded-full bg-lime-500">
               <img src={logo} alt="async logo" className="h-full w-full" />
             </section>
           </Link>
         </span>
-
-        <SearchBoxUser />
 
         <div className="flex h-full items-center">
           <DropdownMenu>
@@ -58,7 +58,7 @@ const Navbar = () => {
                 <>
                   <DropdownMenuLabel>Hi, {user.FirstName}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <Link to={"/user"}>
+                  <Link to={`/user/${user.Username}`}>
                     <DropdownMenuItem className="hover:cursor-pointer">
                       Profile
                     </DropdownMenuItem>
@@ -93,11 +93,9 @@ const Navbar = () => {
               </DropdownMenuSub>
               <DropdownMenuSeparator />
               {token ? (
-                <Link to={"/login"} onClick={() => handlelogout()}>
-                  <DropdownMenuItem className="hover:cursor-pointer">
-                    Logout
-                  </DropdownMenuItem>
-                </Link>
+                <DropdownMenuItem className="hover:cursor-pointer" onClick={() => handlelogout()}>
+                  Logout
+                </DropdownMenuItem>
               ) : (
                 <>
                   <Link to={"/login"}>

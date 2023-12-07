@@ -6,36 +6,42 @@ import DetailStory from "@/pages/story/detail-story";
 import Profile from "@/pages/user";
 import Settings from "@/pages/user/Settings";
 import { createBrowserRouter } from "react-router-dom";
+import ProtectedRoutes from "./protected-routes";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Layout />,
+    element: <ProtectedRoutes />,
     children: [
       {
-        index: true,
-        element: <Index />,
+        path: "/",
+        element: <Layout />,
+        children: [
+          {
+            index: true,
+            element: <Index />,
+          },
+          {
+            path: "/user/:username",
+            element: <Profile />,
+          },
+          {
+            path: "user/settings",
+            element: <Settings />,
+          },
+          {
+            path: "story/:id",
+            element: <DetailStory />,
+          },
+        ],
       },
       {
-        path: "/user",
-        element: <Profile />,
+        path: "/register",
+        element: <Register />,
       },
       {
-        path: "user/settings",
-        element: <Settings />,
-      },
-      {
-        path: "story/:id",
-        element: <DetailStory />,
+        path: "/login",
+        element: <Login />,
       },
     ],
-  },
-  {
-    path: "/register",
-    element: <Register />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
   },
 ]);
