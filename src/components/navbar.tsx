@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   DropdownMenu,
@@ -17,9 +17,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Computer, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/context/theme-provider";
 import SearchBoxUser from "./search-box-user";
+import { useToken } from "@/context/token-provider";
 
 const Navbar = () => {
+  const { user, token } = useToken();
   const { setTheme } = useTheme();
+  const navigate = useNavigate();
+  const handlelogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    navigate("/login");
+  };
   return (
     <div className="sticky top-0 w-full bg-white/90 p-2 dark:bg-black/90">
       <div className="container top-0 flex w-full items-center justify-between">
@@ -43,18 +51,22 @@ const Navbar = () => {
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel>Hi, User</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <Link to={"/user"}>
-                <DropdownMenuItem className="hover:cursor-pointer">
-                  Profile
-                </DropdownMenuItem>
-              </Link>
-              <Link to={"/user/settings"}>
-                <DropdownMenuItem className="hover:cursor-pointer">
-                  Settings
-                </DropdownMenuItem>
-              </Link>
+              {token && (
+                <>
+                  <DropdownMenuLabel>Hi, {user.FirstName}</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <Link to={"/user"}>
+                    <DropdownMenuItem className="hover:cursor-pointer">
+                      Profile
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link to={"/user/settings"}>
+                    <DropdownMenuItem className="hover:cursor-pointer">
+                      Settings
+                    </DropdownMenuItem>
+                  </Link>
+                </>
+              )}
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
                   <span>Theme</span>
@@ -77,11 +89,26 @@ const Navbar = () => {
                 </DropdownMenuPortal>
               </DropdownMenuSub>
               <DropdownMenuSeparator />
-              <Link to={"/login"}>
-                <DropdownMenuItem className="hover:cursor-pointer">
-                  Logout
-                </DropdownMenuItem>
-              </Link>
+              {token ? (
+                <Link to={"/login"} onClick={() => handlelogout()}>
+                  <DropdownMenuItem className="hover:cursor-pointer">
+                    Logout
+                  </DropdownMenuItem>
+                </Link>
+              ) : (
+                <>
+                  <Link to={"/login"}>
+                    <DropdownMenuItem className="hover:cursor-pointer">
+                      Login
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link to={"/register"}>
+                    <DropdownMenuItem className="hover:cursor-pointer">
+                      Register
+                    </DropdownMenuItem>
+                  </Link>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
