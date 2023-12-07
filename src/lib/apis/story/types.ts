@@ -24,6 +24,7 @@ export interface IStory {
   likes: number;
   foto_profil: string;
   comments: IComments[];
+  created_at: string;
 }
 
 export interface IComments {
