@@ -50,7 +50,7 @@ const StoryCard = (props: IProps) => {
   const { story } = props;
   const { toast } = useToast();
 
-  const { user } = useToken();
+  const { user, token } = useToken();
 
   const [open, setIsOpen] = useState(false);
 
@@ -172,31 +172,33 @@ const StoryCard = (props: IProps) => {
         <StoryComment key={comment.comment_id} comment={comment} />
       ))}
 
-      <div className="w-full">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(commentHandler)}>
-            <div className="mt-5 flex w-full items-center rounded-3xl border p-3">
-              <FormField
-                control={form.control}
-                name="komentar"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormControl>
-                      <Textarea
-                        placeholder="Post Your Story"
-                        className="min-h-[40px] w-full resize-none border-none p-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button className="rounded-3xl">Submit</Button>
-            </div>
-          </form>
-        </Form>
-      </div>
+      {token && (
+        <div className="w-full">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(commentHandler)}>
+              <div className="mt-5 flex w-full items-center rounded-3xl border p-3">
+                <FormField
+                  control={form.control}
+                  name="komentar"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormControl>
+                        <Textarea
+                          placeholder="Post Your Story"
+                          className="min-h-[40px] w-full resize-none border-none p-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button className="rounded-3xl">Submit</Button>
+              </div>
+            </form>
+          </Form>
+        </div>
+      )}
     </div>
   );
 };
