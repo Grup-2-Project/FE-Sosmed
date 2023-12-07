@@ -50,3 +50,15 @@ export const editStoryById = async (body: IStory, id: number) => {
     }
   }
 };
+
+export const deleteStoryById = async (id: number | undefined) => {
+  try {
+    const res = await axiosWithConfig.delete(`/posts/${id}`);
+
+    return res.data as IResponse;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw Error(error.response?.data.message);
+    }
+  }
+};

@@ -1,7 +1,33 @@
-import { Heart, MessageCircle, MoreHorizontal, Pencil } from "lucide-react";
-import StoryComment from "./story-comment";
-import { IStory } from "@/lib/apis/story/types";
+import { useState } from "react";
+import { format, parseISO } from "date-fns";
+
+import {
+  Heart,
+  MessageCircle,
+  MoreHorizontal,
+  Pencil,
+  Trash,
+} from "lucide-react";
+
 import { Link } from "react-router-dom";
+
+import StoryComment from "./story-comment";
+import EditFormPopup from "./edit-form-popup";
+import AlertDeleteStory from "./alert-delete-story";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { IStory } from "@/lib/apis/story/types";
+import { createComment } from "@/lib/apis/comment/api";
+import { IComment, commentSchema } from "@/lib/apis/comment/type";
 
 import {
   DropdownMenu,
@@ -9,8 +35,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
-import EditFormPopup from "./edit-form-popup";
+import { useToast } from "./ui/use-toast";
+import { ToastAction } from "./ui/toast";
+import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
+
 import { useToken } from "@/context/token-provider";
 
 interface IProps {
@@ -19,10 +48,39 @@ interface IProps {
 
 const StoryCard = (props: IProps) => {
   const { story } = props;
+  const { toast } = useToast();
 
   const { user } = useToken();
 
   const [open, setIsOpen] = useState(false);
+
+  const form = useForm<IComment>({
+    resolver: zodResolver(commentSchema),
+    defaultValues: {
+      post_id: story.id,
+      komentar: "",
+    },
+  });
+
+  const commentHandler = async (values: IComment) => {
+    try {
+      const res = await createComment(values);
+
+      toast({
+        title: "Success",
+        description: res?.message,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: error.toString(),
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+      }
+    }
+  };
 
   return (
     <div className="my-4 w-full rounded-xl border p-3">
@@ -36,10 +94,16 @@ const StoryCard = (props: IProps) => {
             />
           </div>
           <div className="leading-5">
-            <Link to={`/user/${story.username}`}>
-              <p className="font-semibold hover:underline">{story.username}</p>
-            </Link>
-            <p className="text-[12px] text-slate-400">2 hours ago</p>
+            <section className="w-fit">
+              <Link to={`/user/${story.username}`}>
+                <p className="font-semibold hover:underline">
+                  {story.username}
+                </p>
+              </Link>
+            </section>
+            <p className="text-[12px] text-slate-400">
+              {format(parseISO(story.created_at), "PPP").toString()}
+            </p>
           </div>
         </div>
 
@@ -50,11 +114,22 @@ const StoryCard = (props: IProps) => {
                 <MoreHorizontal />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => setIsOpen(true)}>
+                <DropdownMenuItem
+                  onClick={() => setIsOpen(true)}
+                  className="hover:cursor-pointer"
+                >
                   <div className="flex gap-2">
                     <Pencil className="h-5 w-5 stroke-blue-500" />
                     Edit
                   </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="hover:cursor-pointer">
+                  <AlertDeleteStory id={story.id}>
+                    <div className="mt-2 flex gap-2">
+                      <Trash className="h-5 w-5 stroke-red-500" />
+                      <p className="text-[14px]">Delete</p>
+                    </div>
+                  </AlertDeleteStory>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -68,19 +143,20 @@ const StoryCard = (props: IProps) => {
           </>
         )}
       </div>
-      <div className="w-full">
-        {story.gambar && (
+      {story.gambar && (
+        <div className="aspect-[3/3] w-full">
           <Link to={`/story/${story.id}`}>
             <img
               src={story.gambar}
               alt={story.artikel}
-              className="aspect-[3/3] rounded-xl object-cover"
+              className="h-full w-full rounded-xl object-cover"
             />
           </Link>
-        )}
-
-        <p className="pt-2">{story.artikel}</p>
-      </div>
+        </div>
+      )}
+      <Link to={`/story/${story.id}`}>
+        <p className="w-full pt-2">{story.artikel}</p>
+      </Link>
       <div className="mt-5 flex w-full gap-2 border-b pb-4">
         <span className="flex gap-1">
           <Heart className="fill-rose-500" />
@@ -95,6 +171,32 @@ const StoryCard = (props: IProps) => {
       {story.comments.map((comment) => (
         <StoryComment key={comment.comment_id} comment={comment} />
       ))}
+
+      <div className="w-full">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(commentHandler)}>
+            <div className="mt-5 flex w-full items-center rounded-3xl border p-3">
+              <FormField
+                control={form.control}
+                name="komentar"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormControl>
+                      <Textarea
+                        placeholder="Post Your Story"
+                        className="min-h-[40px] w-full resize-none border-none p-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button className="rounded-3xl">Submit</Button>
+            </div>
+          </form>
+        </Form>
+      </div>
     </div>
   );
 };

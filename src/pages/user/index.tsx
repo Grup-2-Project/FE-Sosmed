@@ -8,7 +8,7 @@ import { getStoryByUsername, getUser } from "@/lib/apis/user/api";
 import { Profile } from "@/lib/apis/user/types";
 import { CalendarDays } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, ScrollRestoration, useParams } from "react-router-dom";
 
 const ProfilePage = () => {
   const [storyData, setStoryData] = useState<IStory[]>();
@@ -53,6 +53,7 @@ const ProfilePage = () => {
 
   return (
     <div className="container">
+      <ScrollRestoration />
       <div className="flex flex-col items-center">
         <div className="flex w-[700px] flex-col items-center rounded-xl border-b pb-4">
           <section className="flex h-[400px] w-full items-end bg-[url('https://source.unsplash.com/700x300?mountain')] bg-[length:700px_320px] bg-top bg-no-repeat">
