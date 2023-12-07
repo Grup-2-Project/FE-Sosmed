@@ -1,7 +1,16 @@
-import { MessageCircle, ThumbsUp } from "lucide-react";
+import { MessageCircle, MoreHorizontal, Pencil, ThumbsUp } from "lucide-react";
 import StoryComment from "./story-comment";
 import { IStory } from "@/lib/apis/story/types";
 import { Link } from "react-router-dom";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useState } from "react";
+import EditFormPopup from "./edit-form-popup";
 
 interface IProps {
   story: IStory;
@@ -9,20 +18,40 @@ interface IProps {
 
 const StoryCard = (props: IProps) => {
   const { story } = props;
+
+  const [open, setIsOpen] = useState(false);
+
   return (
     <div className="w-full rounded-xl border p-3">
-      <div className="mb-2 flex w-full items-center gap-4">
-        <div className="h-[30px] w-[30px] overflow-clip rounded-full">
-          <img
-            src="https://images.tokopedia.net/img/JFrBQq/2022/9/6/652515bf-d1ca-4462-830b-b4c10302d481.jpg"
-            alt="harry maguire clown"
-            className="h-full w-full object-cover"
-          />
+      <div className="flex justify-between">
+        <div className="mb-2 flex w-full items-center gap-4">
+          <div className="h-[30px] w-[30px] overflow-clip rounded-full">
+            <img
+              src="https://images.tokopedia.net/img/JFrBQq/2022/9/6/652515bf-d1ca-4462-830b-b4c10302d481.jpg"
+              alt="harry maguire clown"
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <div className="leading-5">
+            <p className="font-semibold">{story.username}</p>
+            <p className="text-[12px] text-slate-400">2 hours ago</p>
+          </div>
         </div>
-        <div className="leading-5">
-          <p className="font-semibold">{story.username}</p>
-          <p className="text-[12px] text-slate-400">2 hours ago</p>
-        </div>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <MoreHorizontal />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onClick={() => setIsOpen(true)}>
+              <div className="flex gap-2">
+                <Pencil className="stroke-blue-500 h-5 w-5" />
+                Edit
+              </div>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <EditFormPopup open={open} setIsOpen={setIsOpen} />
       </div>
       <div className="w-full">
         <Link to={`/story/${story.id}`}>
