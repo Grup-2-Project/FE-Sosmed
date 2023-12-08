@@ -1,30 +1,60 @@
-# React + TypeScript + Vite
+# ASYNC - Simple Social Media App 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the ASYNC Social Media App! This application allows users to connect with friends, and engage in social networking.
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [ASYNC - Simple Social Media App](#async---simple-social-media-app)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- User authentication: Sign up, log in, and log out securely.
+- Post updates: Share text and multimedia content with your friends.
+- Friend connections: Connect with other users and view their updates.
+- Notifications: Receive notifications for new friend requests and updates.
 
-- Configure the top-level `parserOptions` property like this:
+## Getting Started
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+### Prerequisites
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Before you begin, ensure you have the following installed:
+
+- Node.js: [Download Node.js](https://nodejs.org/)
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/Grup-2-Project/FE-Sosmed.git
+   ```
+2. Navigate to the project directory:
+   ```
+   cd FE-Sosmed
+   ```
+
+3. Navigate to the project directory:
+   ```
+   cd FE-Sosmed
+   ```
+
+4. Navigate to the project directory:
+   ```
+   npm install
+   ```
+
+5. Navigate to the project directory:
+   Set up environment variables:
+   Create a .env file in the root of the project and configure the following:
+   ```
+   VITE_BASE_URL = "Link Backend"
+   ```
+6. Start the application:
+   ```
+   npm run dev
+   ```
