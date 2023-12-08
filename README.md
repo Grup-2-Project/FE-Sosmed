@@ -33,6 +33,7 @@ Before you begin, ensure you have the following installed:
    ```bash
    git clone https://github.com/Grup-2-Project/FE-Sosmed.git
    ```
+   
 2. Navigate to the project directory:
    ```
    cd FE-Sosmed
@@ -40,21 +41,17 @@ Before you begin, ensure you have the following installed:
 
 3. Navigate to the project directory:
    ```
-   cd FE-Sosmed
-   ```
-
-4. Navigate to the project directory:
-   ```
    npm install
    ```
 
-5. Navigate to the project directory:
+4. Navigate to the project directory:
    Set up environment variables:
    Create a .env file in the root of the project and configure the following:
    ```
    VITE_BASE_URL = "Link Backend"
    ```
-6. Start the application:
+
+5. Start the application:
    ```
    npm run dev
    ```
