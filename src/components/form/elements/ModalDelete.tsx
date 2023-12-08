@@ -13,6 +13,7 @@ import { ReactNode, useState } from "react";
 import { toast } from "../../ui/use-toast";
 import { deleteUser } from "@/lib/apis/user/api";
 import { useNavigate } from "react-router-dom";
+import { useToken } from "@/context/token-provider";
 
 interface ModalProps {
   children: ReactNode;
@@ -20,6 +21,7 @@ interface ModalProps {
 
 const ModalDelete = ({ children }: ModalProps) => {
   const [open, setOpen] = useState(false);
+  const { changeToken } = useToken();
   const navigate = useNavigate();
   const handleDeleteUser = async () => {
     try {
@@ -27,6 +29,7 @@ const ModalDelete = ({ children }: ModalProps) => {
       const result = await deleteUser();
       localStorage.removeItem("username");
       localStorage.removeItem("token");
+      changeToken("");
       toast({
         description: result.message,
       });
