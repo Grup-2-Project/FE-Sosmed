@@ -39,7 +39,7 @@ export const userUpdateSchema = z
       .optional()
       .or(z.literal("")),
   })
-  .refine((data) => data.password !== data.repassword, {
+  .refine((data) => data.password === data.repassword, {
     message: "Password don't match",
     path: ["repassword"],
   });

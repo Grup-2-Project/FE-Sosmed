@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IUserUpdateType, userUpdateSchema } from "@/lib/apis/user/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Camera, Loader } from "lucide-react";
+import { Camera, Loader, UserCircle2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "./elements/ErrorMessage";
 import { Input } from "../ui/input";
@@ -76,15 +76,16 @@ const FormUpdateUser = () => {
           <div className="flex items-center gap-x-8">
             <div className="relative ">
               <label htmlFor="file-input" className="cursor-pointer">
-                <img
-                  src={
-                    user.foto_profil === "default"
-                      ? "https://source.unsplash.com/200x200?person"
-                      : user.foto_profil
-                  }
-                  className="h-24 w-24 rounded-full object-cover "
-                  alt="profile"
-                />
+                {user.foto_profil === "default" ? (
+                  <UserCircle2 className="h-24 w-24 rounded-full object-cover" />
+                ) : (
+                  <img
+                    src={user.foto_profil}
+                    className="h-24 w-24 rounded-full object-cover "
+                    alt="profile"
+                  />
+                )}
+
                 <Camera className="absolute bottom-0 right-0  rounded-full bg-slate-700 " />
               </label>
 
@@ -210,7 +211,7 @@ const FormUpdateUser = () => {
             </Label>
             <Input
               id="password"
-              type="text"
+              type="password"
               {...register("password")}
               placeholder="Password"
             />
@@ -224,7 +225,7 @@ const FormUpdateUser = () => {
             </Label>
             <Input
               id="repassword"
-              type="text"
+              type="password"
               {...register("repassword")}
               placeholder="Re-password"
             />
