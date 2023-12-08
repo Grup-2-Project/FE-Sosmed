@@ -1,6 +1,6 @@
 import { IResponse } from "@/lib/types/api";
 import axiosWithConfig from "../axiosWithConfig";
-import { IStory } from "./types";
+import { IStory, IStoryType } from "./types";
 import { AxiosError } from "axios";
 
 export const getStory = async () => {
@@ -27,9 +27,18 @@ export const getStoryById = async (id: string | undefined) => {
   }
 };
 
-export const createStory = async (body: IStory) => {
+export const createStory = async (body: IStoryType) => {
   try {
-    const res = await axiosWithConfig.post("/posts", body);
+    const formData = new FormData();
+    let key: keyof typeof body;
+
+    for (key in body) {
+      if (body[key]) {
+        formData.append(key, body[key]);
+      }
+    }
+
+    const res = await axiosWithConfig.post("/posts", formData);
 
     return res.data as IResponse;
   } catch (error) {
@@ -41,7 +50,9 @@ export const createStory = async (body: IStory) => {
 
 export const editStoryById = async (body: IStory, id: number) => {
   try {
-    const res = await axiosWithConfig.post(`/posts/${id}`, body);
+    const res = await axiosWithConfig.put(`/posts/${id}`, body);
+
+    console.log(body);
 
     return res.data as IResponse;
   } catch (error) {

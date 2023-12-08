@@ -16,6 +16,8 @@ export const storySchema = z.object({
     .or(z.literal("")),
 });
 
+export type IStoryType = z.infer<typeof storySchema>;
+
 export interface IStory {
   id: number;
   artikel: string;
@@ -34,5 +36,3 @@ export interface IComments {
   username: string;
   foto_profil: string;
 }
-
-export type IStoryType = z.infer<typeof storySchema>;

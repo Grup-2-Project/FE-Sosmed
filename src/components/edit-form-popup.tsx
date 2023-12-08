@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Dialog,
   DialogContent,
@@ -37,6 +38,8 @@ const EditFormPopup = (props: IProps) => {
   const { toast } = useToast();
   const { open, setIsOpen, id, artikel, gambar } = props;
 
+  console.log(gambar);
+
   const form = useForm<IStoryType>({
     resolver: zodResolver(storySchema),
     defaultValues: {
@@ -51,6 +54,7 @@ const EditFormPopup = (props: IProps) => {
 
   const submitStoryHandler = async (values: IStoryType) => {
     try {
+      console.log(values);
       const formData = new FormData();
       formData.append("artikel", values.artikel as string);
       formData.append("gambar", values.gambar[0]);
@@ -71,6 +75,7 @@ const EditFormPopup = (props: IProps) => {
         });
       }
     } finally {
+      setIsOpen(false);
       form.reset();
     }
   };
@@ -113,7 +118,7 @@ const EditFormPopup = (props: IProps) => {
                 <FormItem>
                   <FormControl>
                     <Input
-                      id="picture"
+                      id="gambar"
                       type="file"
                       accept="image/jpg, image/jpeg, image/png"
                       {...fileRef}

@@ -48,11 +48,11 @@ const PostFormPopup = (props: IProps) => {
 
   const submitStoryHandler = async (values: IStoryType) => {
     try {
-      const formData = new FormData();
-      formData.append("artikel", values.artikel as string);
-      formData.append("gambar", values.gambar[0]);
-
-      const res = await createStory(formData as any);
+      const formValue: IStoryType = {
+        artikel: values.artikel,
+        gambar: values.gambar[0],
+      };
+      const res = await createStory(formValue);
 
       toast({
         title: "Success",
@@ -85,6 +85,7 @@ const PostFormPopup = (props: IProps) => {
           <form
             onSubmit={form.handleSubmit(submitStoryHandler)}
             className="mt-3"
+            encType="multipart/form-data"
           >
             <FormField
               control={form.control}
@@ -129,7 +130,11 @@ const PostFormPopup = (props: IProps) => {
               disabled={form.formState.isSubmitting}
               aria-disabled={form.formState.isSubmitting}
             >
-              {form.formState.isSubmitting ? <Loader2 className="animate-spin" /> : "Submit"}
+              {form.formState.isSubmitting ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                "Submit"
+              )}
             </Button>
           </form>
         </Form>

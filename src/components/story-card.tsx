@@ -143,7 +143,8 @@ const StoryCard = (props: IProps) => {
           </>
         )}
       </div>
-      {story.gambar && (
+
+      {story.gambar !== "undefined" && (
         <div className="aspect-[3/3] w-full">
           <Link to={`/story/${story.id}`}>
             <img
@@ -154,6 +155,7 @@ const StoryCard = (props: IProps) => {
           </Link>
         </div>
       )}
+      
       <Link to={`/story/${story.id}`}>
         <p className="w-full pt-2">{story.artikel}</p>
       </Link>
