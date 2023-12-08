@@ -55,7 +55,7 @@ export const TokenProvider = ({ children }: Readonly<TokenProviderProps>) => {
     async (param: string) => {
       try {
         const result = await getUser(param ?? 1);
-        setUser(result);
+        setUser(result.data);
       } catch (error: any) {
         toast({
           title: "Oops! Something went wrong.",

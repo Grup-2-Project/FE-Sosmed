@@ -8,7 +8,7 @@ export const getUser = async (username: string | undefined) => {
   try {
     const response = await axiosWithConfig.get(`/users/${username}`);
 
-    return response.data as Profile;
+    return response.data as IResponse<Profile>;
   } catch (error: any) {
     throw Error(error.response.data.message);
   }

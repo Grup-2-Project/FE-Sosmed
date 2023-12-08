@@ -1,4 +1,5 @@
 import { IComments } from "@/lib/apis/story/types";
+import { Link } from "react-router-dom";
 
 interface IProps {
   comment: IComments;
@@ -17,7 +18,9 @@ const StoryComment = (props: IProps) => {
         />
       </div>
       <div>
-        <p className="text-[14px] font-medium">{comment.username}</p>
+        <Link to={`/user/${comment.username}`} className="hover:underline">
+          <p className="text-[14px] font-medium">{comment.username}</p>
+        </Link>
         <p className="text-[12px]">{comment.komentar}</p>
       </div>
     </div>

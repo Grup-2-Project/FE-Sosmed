@@ -56,9 +56,9 @@ const Navbar = () => {
             <DropdownMenuContent>
               {token && (
                 <>
-                  <DropdownMenuLabel>Hi, {user.FirstName}</DropdownMenuLabel>
+                  <DropdownMenuLabel>Hi, {user.nama_depan}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <Link to={`/user/${user.Username}`}>
+                  <Link to={`/user/${user.username}`}>
                     <DropdownMenuItem className="hover:cursor-pointer">
                       Profile
                     </DropdownMenuItem>
@@ -93,7 +93,10 @@ const Navbar = () => {
               </DropdownMenuSub>
               <DropdownMenuSeparator />
               {token ? (
-                <DropdownMenuItem className="hover:cursor-pointer" onClick={() => handlelogout()}>
+                <DropdownMenuItem
+                  className="hover:cursor-pointer"
+                  onClick={() => handlelogout()}
+                >
                   Logout
                 </DropdownMenuItem>
               ) : (

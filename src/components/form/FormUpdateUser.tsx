@@ -39,18 +39,18 @@ const FormUpdateUser = () => {
   });
 
   useEffect(() => {
-    setValue("nama_depan", user.FirstName!);
-    setValue("nama_belakang", user.LastName!);
-    setValue("username", user.Username!);
-    setValue("email", user.Email!);
-    setValue("gender", user.Gender!);
-    setValue("hp", user.Hp!);
+    setValue("nama_depan", user.nama_depan!);
+    setValue("nama_belakang", user.nama_belakang!);
+    setValue("username", user.username!);
+    setValue("email", user.email!);
+    setValue("gender", user.gender!);
+    setValue("hp", user.hp!);
   }, [user]);
 
   const handleUpdateUser = async (body: IUserUpdateType) => {
     try {
       const result = await updateUser(body);
-      if (user.Username !== body.username) {
+      if (user.username !== body.username) {
         localStorage.setItem("username", body.username);
       }
 
@@ -71,16 +71,16 @@ const FormUpdateUser = () => {
       onSubmit={handleSubmit(handleUpdateUser)}
       className=" border-900 mx-auto flex max-w-4xl flex-col rounded-md border border-white/10 bg-black shadow-lg"
     >
-      {user.Image ? (
+      {user.foto_profil ? (
         <div className=" flex items-center justify-around py-8">
           <div className="flex items-center gap-x-8">
             <div className="relative ">
               <label htmlFor="file-input" className="cursor-pointer">
                 <img
                   src={
-                    user.Image === "default"
+                    user.foto_profil === "default"
                       ? "https://source.unsplash.com/200x200?person"
-                      : user.Image
+                      : user.foto_profil
                   }
                   className="h-24 w-24 rounded-full object-cover "
                   alt="profile"
@@ -101,10 +101,10 @@ const FormUpdateUser = () => {
             </div>
             <div className="flex flex-col ">
               <h3 className="text-2xl font-semibold">
-                {user.FirstName} {user.LastName}
+                {user.nama_depan} {user.nama_belakang}
               </h3>
               <span className="text-sm text-sky-500 underline">
-                @{user.Username}
+                @{user.username}
               </span>
             </div>
           </div>
@@ -210,7 +210,7 @@ const FormUpdateUser = () => {
             </Label>
             <Input
               id="password"
-              type="password"
+              type="text"
               {...register("password")}
               placeholder="Password"
             />
@@ -224,7 +224,7 @@ const FormUpdateUser = () => {
             </Label>
             <Input
               id="repassword"
-              type="password"
+              type="text"
               {...register("repassword")}
               placeholder="Re-password"
             />
