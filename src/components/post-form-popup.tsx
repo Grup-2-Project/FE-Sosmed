@@ -77,9 +77,9 @@ const PostFormPopup = (props: IProps) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full">{children}</DialogTrigger>
-      <DialogContent className="min-w-[700px]">
+      <DialogContent className="w-[380px] lg:min-w-[700px] rounded-xl">
         <DialogHeader>
-          <DialogTitle>Create Status</DialogTitle>
+          <DialogTitle className="text-left">Create Status</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form

@@ -7,7 +7,7 @@ const Index = () => {
   const { token } = useToken();
 
   return (
-    <div className="container flex justify-center">
+    <div className="container flex justify-center px-3 lg:px-0">
       <div className="flex w-[700px] flex-col gap-2">
         {token && (
           <PostFormPopup>

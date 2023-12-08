@@ -1,4 +1,5 @@
 import { IComments } from "@/lib/apis/story/types";
+import { UserCircle2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface IProps {
@@ -10,12 +11,16 @@ const StoryComment = (props: IProps) => {
 
   return (
     <div className="mt-3 flex gap-3">
-      <div className="max-h-[30px] max-w-[30px] overflow-clip rounded-full">
-        <img
-          src="https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?q=80&w=2076&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="man smiling"
-          className="h-full w-full object-cover"
-        />
+      <div className="flex max-h-[30px] max-w-[30px] items-center justify-center overflow-clip rounded-full border">
+        {comment.foto_profil === "default" ? (
+          <UserCircle2 />
+        ) : (
+          <img
+            src={comment.foto_profil}
+            alt={comment.username}
+            className="h-full w-full object-cover"
+          />
+        )}
       </div>
       <div>
         <Link to={`/user/${comment.username}`} className="hover:underline">

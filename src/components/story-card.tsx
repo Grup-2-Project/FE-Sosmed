@@ -7,6 +7,7 @@ import {
   MoreHorizontal,
   Pencil,
   Trash,
+  UserCircle,
 } from "lucide-react";
 
 import { Link } from "react-router-dom";
@@ -86,12 +87,16 @@ const StoryCard = (props: IProps) => {
     <div className="my-4 w-full rounded-xl border p-3">
       <div className="flex justify-between">
         <div className="mb-2 flex w-full items-center gap-4">
-          <div className="h-[30px] w-[30px] overflow-clip rounded-full">
-            <img
-              src="https://images.tokopedia.net/img/JFrBQq/2022/9/6/652515bf-d1ca-4462-830b-b4c10302d481.jpg"
-              alt="harry maguire clown"
-              className="h-full w-full object-cover"
-            />
+          <div className="flex h-[30px] w-[30px] items-center justify-center overflow-clip rounded-full border">
+            {story.foto_profil === "default" ? (
+              <UserCircle />
+            ) : (
+              <img
+                src={story.foto_profil}
+                alt={story.username}
+                className="h-full w-full object-cover"
+              />
+            )}
           </div>
           <div className="leading-5">
             <section className="w-fit">
@@ -107,7 +112,7 @@ const StoryCard = (props: IProps) => {
           </div>
         </div>
 
-        {user.Username === story.username && (
+        {user.username === story.username && (
           <>
             <DropdownMenu>
               <DropdownMenuTrigger>
@@ -155,7 +160,7 @@ const StoryCard = (props: IProps) => {
           </Link>
         </div>
       )}
-      
+
       <Link to={`/story/${story.id}`}>
         <p className="w-full pt-2">{story.artikel}</p>
       </Link>

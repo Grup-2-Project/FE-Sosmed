@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Computer, Moon, Sun } from "lucide-react";
+import { Computer, Moon, Sun, UserCircle2 } from "lucide-react";
 import { useTheme } from "@/context/theme-provider";
 import logo from "@/assets/img/logo2.jpg";
 
@@ -46,11 +46,10 @@ const Navbar = () => {
           <DropdownMenu>
             <DropdownMenuTrigger className="h-full">
               <Avatar>
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt="@shadcn"
-                />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarImage src={user.foto_profil} alt="@shadcn" />
+                <AvatarFallback>
+                  <UserCircle2 />
+                </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
